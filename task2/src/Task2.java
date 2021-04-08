@@ -40,9 +40,12 @@ public class Task2
     public static int equal(int a, int b, int c)
     {
         int kolvo = 0;
-        if (a == b) kolvo++;
-        if (a == c) kolvo++;
-        if (b == c) kolvo++;
+        if (a == b) 
+            kolvo++;
+        if (a == c) 
+            kolvo++;
+        if (b == c) 
+            kolvo++;
         if (((a == c) & (a != b)) || ((b == c) & (a != b)) || ((a == b) & (a != c))) 
             kolvo++;
         return kolvo;
@@ -50,7 +53,8 @@ public class Task2
 
     /*#6 Создайте метод, который принимает строку в качестве аргумента и возвращает ее в обратном порядке.
 */
-    public static String reverse(String s) {
+    public static String reverse(String s) 
+    {
         return new StringBuilder(s).reverse().toString();
     }
 
@@ -88,19 +92,18 @@ public class Task2
 Строка "бомба" может появляться в разных случаях символов (например, в верхнем, нижнем регистре, смешанном) */
     public static String bomb(String str) 
     {
-        String d;
-        if (str.contains("bomb") || str.contains("Bomb") || str.contains("BOMB")) {
-            d = "ПРИГНИСЬ!";
+        str.toLowerCase();
+        if (str.contains("bomb")) {
+            return "ПРИГНИСЬ!";
         } else {
-            d = "Расслабься, бомбы нет";
+            return "Расслабься, бомбы нет";
         }
-        return d;
     }
 
     /*#10 Возвращает true, если сумма значений ASCII первой строки совпадает с суммой значений ASCII второй строки,
 в противном случае возвращает false*/
     public static boolean sameAscii(String str1, String str2){
-        int Sum1=0; int Sum2=0;
+        int Sum1 = 0; int Sum2 = 0;
         char[] ascii1 = str1.toCharArray();
         char[] ascii2 = str2.toCharArray();
         for (char c : ascii1) {
@@ -109,7 +112,7 @@ public class Task2
         for (char c : ascii2) {
             Sum2 += c;
         }
-        return Sum1==Sum2;
+        return Sum1 == Sum2;
     }
 
 
