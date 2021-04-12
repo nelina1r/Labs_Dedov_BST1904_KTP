@@ -1,8 +1,5 @@
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.OptionalDouble;
-import java.util.stream.IntStream;
 
 import static java.lang.Math.*;
 
@@ -11,14 +8,16 @@ public class Task3
 
     /*#1 Учитывая массив городов и населения, верните массив, в котором все население
 округлено до ближайшего миллиона. */
-    public static void millionsRounding(String[][] str)
+    public static String[][] millionsRounding(String[][] str)
     {
-        for (int i=0; i<str.length;i++){
-            BigDecimal a = new BigDecimal(str[i][1]);
-            a=a.divide(new BigDecimal("1000000")).setScale(0, RoundingMode.HALF_UP);
-            str[i][1]=a.toString();
+        double r_p = 0;
+        for (int i = 0; i < str.length; i++)
+        {
+            int ppl = Integer.parseInt(str[i][1]);
+            r_p = Math.round(ppl / Math.pow(10, 6)) * Math.pow(10, 6);
+            str[i][1] = String.valueOf(r_p);
         }
-        System.out.println(Arrays.deepToString(str));
+        return str;
     }
 
     /*#2 Учитывая самую короткую сторону треугольника 30° на 60° на 90°, вы должны
@@ -176,7 +175,17 @@ public static String rps(String s, String g){
 
     public static void main(String[] args) throws Exception 
     {
-        System.out.println("# 1 = " );millionsRounding(new String[][] {{"Manila", "13923452"},{"Kuala Lumpur", "7996830"}, {"Jakarta", "10770487"}});
+        String[][] city = {{"Manila", "5354553"},{"Kuala Lumpur", "7996830"}, {"Jakarta", "1077048"}};
+        System.out.println("# 1 = " );
+        millionsRounding(city);
+        for (int i = 0; i < city.length; i++)
+        {
+            for (int j = 0; j < city[i].length; j++)
+            {
+                System.out.print(city[i][j] + " ");
+            }
+            System.out.println();
+        }
         System.out.println("# 2 = " + Arrays.toString(otherSides(12)));
         System.out.println("# 3 = " + rps("scissors", "scissors"));
         System.out.println("# 4 = " + warOfNumbers(new int[]{5, 9, 45, 6, 2, 7, 34, 8, 6, 90, 5, 243}));

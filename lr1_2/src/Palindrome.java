@@ -1,8 +1,10 @@
 public class Palindrome 
 {
     public static void main(String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            String s = args[i];
+        String[] arr = {"java", "Palindrome", "madam", "racecar", "apple", "kayak", "song", "noon"};
+        for (int i = 0; i < arr.length; i++) 
+        {
+            String s = arr[i];
             if (isPalindrome(s))
                 System.out.printf("%s это палиндром\n", s);
             else
