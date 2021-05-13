@@ -1,4 +1,4 @@
-public class Palindrome 
+    public class Palindrome 
 {
     public static void main(String[] args) {
         String[] arr = {"java", "Palindrome", "madam", "racecar", "apple", "kayak", "song", "noon"};

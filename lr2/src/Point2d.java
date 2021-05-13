@@ -1,42 +1,32 @@
 public class Point2d {
-    /* двумерный класс точки. */
-    
-    private double xCoord;  // координата X
-    private double yCoord;  // координата Y
-
+        /** координата X **/
+    private double xCoord;
+    /** координата Y **/
+    private double yCoord;
+    /** Конструктор инициализации **/
     public Point2d(double x, double y) {
-        /* Конструктор инициализации */
         xCoord = x;
         yCoord = y;
     }
-    
+    /** Конструктор по умолчанию. **/
     public Point2d() {
-        /* Конструктор по умолчанию. */
         //Вызовите конструктор с двумя параметрами и определите источник.
         this(0, 0);
     }
-    
-    // Разве для этого нет какого-нибудь сахара?
-    // чтоб писать point.x, point.y
-    // а он уже там как-то сам вызывал getX(), getY()?
-    
+    /** Возвращение координаты X **/
     public double getX() {
-        /* Возвращение координаты X */
         return xCoord;
     }
-    
+    /** Возвращение координаты Y **/
     public double getY() {
-        /* Возвращение координаты Y */
         return yCoord;
     }
-    
+    /** Установка значения координаты X. **/
     public void setX(double val) {
-        /* Установка значения координаты X. */
         xCoord = val;
     }
-    
-    public void setY ( double val) {
-        /* Установка значения координаты Y. */
+    /** Установка значения координаты Y. **/
+    public void setY(double val) {
         yCoord = val;
-    }
+    } 
 }
