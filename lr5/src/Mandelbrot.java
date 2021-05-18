@@ -33,4 +33,7 @@ class Mandelbrot extends FractalGenerator
 
         return iteration;
     }
+    public String toString() { //для комбобокса
+        return "Mandelbro";
+    }
 }

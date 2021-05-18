@@ -1,101 +1,86 @@
+import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.Rectangle2D;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.*;
 
 
-public class FractalExplorer {
-    /* Размер экрана (квадратное отображение) **/
+public class FractalExplorer
+{
     private int displaySize;
-
-    /* Для отображения в процессе вычисления фрактала **/
     private JImageDisplay display;
-
-    /* Для отображения других видов фракталов в будущем **/
-    private FractalGenerator generator;
-
-    /* Указывает диапазон комплексной области, которая выводится на экран **/
+    private FractalGenerator fractal;
     private Rectangle2D.Double range;
 
-    /* Принимает размер экрана, инициализирует объекты диапазона и генератора
-     * фрактала
-     */
-    public FractalExplorer(int length) {
-        this.displaySize = length;
+    public FractalExplorer(int size) {
+        displaySize = size;
+        fractal = new Mandelbrot();
         range = new Rectangle2D.Double();
-        generator = new Mandelbrot();
-        generator.getInitialRange(range);
+        fractal.getInitialRange(range);
+        display = new JImageDisplay(displaySize, displaySize);
     }
 
-    /** Инициализация и отображение окна */
-    public void createAndShowGUI() {
-        display = new JImageDisplay(displaySize, displaySize);
-        JFrame frame = new JFrame();
-        /** Инициализация кнопки */
-        JButton button = new JButton("Reset Display");
-        AL actionListner = new AL();
-        button.addActionListener(actionListner);
-        /** Инициализация мыши */
-        ML mouseListener = new ML();
-        frame.addMouseListener(mouseListener);
-        /** Параметры окна */
+    public void createAndShowGUI()
+    {
+        display.setLayout(new BorderLayout());
+        JFrame frame = new JFrame("Fractal Explorer");
         frame.add(display, BorderLayout.CENTER);
-        frame.add(button, BorderLayout.SOUTH);
-        frame.setTitle("Fractal Explorer");
+        JButton resetButton = new JButton("Reset Display");
+        ResetHandler handler = new ResetHandler();
+        resetButton.addActionListener(handler);
+        frame.add(resetButton, BorderLayout.SOUTH);
+        MouseHandler click = new MouseHandler();
+        display.addMouseListener(click);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
     }
 
-    /** Отрисовка фрактала попиксельно **/
-    private void drawFractal() {
-        
-        for (int x = 0; x < displaySize; x++) {
-            double xCoord = FractalGenerator.getCoord(range.x, range.x + range.width, displaySize, x);
-            for (int y = 0; y < displaySize; y++) {
-                double yCoord = FractalGenerator.getCoord(range.y, range.y + range.height, displaySize, y);
-                int n = generator.numIterations(xCoord, yCoord);
-                if (n == -1) {
+    private void drawFractal()
+    {
+        for (int x=0; x<displaySize; x++){
+            for (int y=0; y<displaySize; y++){
+                double xCoord = fractal.getCoord(range.x, range.x + range.width, displaySize, x);
+                double yCoord = fractal.getCoord(range.y, range.y + range.height, displaySize, y);
+                int iteration = fractal.numIterations(xCoord, yCoord);
+                if (iteration == -1) {
                     display.drawPixel(x, y, 0);
                 }
                 else {
-                    float hue = 0.7f + (float)n / 200f;
+                    float hue = 0.7f + (float) iteration / 200f;
                     int rgbColor = Color.HSBtoRGB(hue, 1f, 1f);
                     display.drawPixel(x, y, rgbColor);
                 }
             }
         }
-        /** После того, как вы закончили отрисовывать все пиксели, вам необходимо 
-         * обновить JimageDisplay в соответствии с текущим изображением.
-         */
         display.repaint();
     }
-
-    /** Для обработки события для кнопки */
-    private class AL implements ActionListener {
+    private class ResetHandler implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            fractal.getInitialRange(range);
+            drawFractal();
+        }
+    }
+    private class MouseHandler extends MouseAdapter
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            generator.getInitialRange(range);
+        public void mouseClicked(MouseEvent e)
+        {
+            int x = e.getX();
+            double xCoord = fractal.getCoord(range.x, range.x + range.width, displaySize, x);
+            int y = e.getY();
+            double yCoord = fractal.getCoord(range.y, range.y + range.height, displaySize, y);
+            fractal.recenterAndZoomRange(range, xCoord, yCoord, 0.5);
             drawFractal();
         }
     }
 
-    /** Для обработки события мыши */
-    private class ML extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            double xCoord = FractalGenerator.getCoord(range.x, range.x + range.width, displaySize, e.getX());
-            double yCoord = FractalGenerator.getCoord(range.y, range.y + range.height, displaySize, e.getY());
-            generator.recenterAndZoomRange(range, xCoord, yCoord, 0.5);
-            drawFractal();
-        }
-    }
-
-    public static void main(String[] args) {
-        FractalExplorer explorer = new FractalExplorer(800);
-        explorer.createAndShowGUI();
-        explorer.drawFractal();
+    public static void main(String[] args)
+    {
+        FractalExplorer displayExplorer = new FractalExplorer(600);
+        displayExplorer.createAndShowGUI();
+        displayExplorer.drawFractal();
     }
 }
