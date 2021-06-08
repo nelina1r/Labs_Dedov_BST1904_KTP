@@ -113,23 +113,40 @@ public static int raznitsa(int num) {
 //8 Создайте функцию, которая принимает предложение в качестве входных данных и
 // возвращает наиболее распространенную последнюю гласную в предложении в
 // виде одной символьной строки.
-    public static String commonLastVowel (String vowel) {
-        vowel = vowel.toLowerCase();
-        char[] arr = vowel.toCharArray();
-        char buf = '1';
-        for(int i = 0; i< arr.length; i++){
-          if (isVowel(arr[i]))
-              buf = arr[i];
+public static boolean isVowel(char ch) {
+    if (ch == 'a' || ch == 'e' || ch == 'i'
+            || ch == 'o' || ch == 'u' || ch == 'y') {  //чек на гласную
+        return true;
+    }
+    return false;
+}
+public static String commonLastVowel(String string) {
+    String lasts = "";
+    string = string.toLowerCase();
+    for (int i = 0; i < string.length(); i++) {
+        if (!isVowel(string.charAt(i)) || ((!Character.isLetter(string.charAt(i)) || i + 1 != string.length())
+                && (!Character.isLetter(string.charAt(i)) || Character.isLetter(string.charAt(i + 1))))) {
+            continue;
         }
-        return String.valueOf(buf); //valueOf возвращает строкове представление переданного аргумента
+        lasts += string.charAt(i);
     }
-
-    public static boolean isVowel(char c)
-    {
-        return "aeiouy".indexOf(c)!=-1;
+    String max = "" + lasts.charAt(0);
+    int max_c = 0; //максимальное значение повторений
+    int count = 0;
+    for (int i = 0; i < lasts.length() - 1; i++) {
+        count = 1;
+        for (int j = i + 1; j < lasts.length(); j++) {
+            if (lasts.charAt(i) == lasts.charAt(j)) count++;
+        }
+        if (count > max_c) {
+            max_c = count;
+            max = "" + lasts.charAt(i);
+        }
     }
+    return max;
+}
 
-// Для этой задачи забудьте, как сложить два числа вместе. Лучшее объяснение того,
+//9 Для этой задачи забудьте, как сложить два числа вместе. Лучшее объяснение того,
 // что нужно сделать для этой функции, - это этот мем:
 //  248 + 208 = 4416
     public static int memeSum(int a1, int a2){
